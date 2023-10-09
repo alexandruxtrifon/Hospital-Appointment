@@ -1,7 +1,7 @@
 CREATE TABLE Pacient(nume VARCHAR(30) NOT NULL,
-					varsta SMALLINT(3) NOT NULL,
-					 telefon VARCHAR(15) NOT NULL,
-					 CodPacient SERIAL PRIMARY KEY
+					Varsta SMALLINT(3) NOT NULL,
+					Telefon VARCHAR(15) NOT NULL,
+					CodPacient SERIAL PRIMARY KEY
 					);
 CREATE TABLE Programare(CodProgramare SERIAL PRIMARY KEY,
 						CodPacient INT REFERENCES Pacient(CodPacient),
