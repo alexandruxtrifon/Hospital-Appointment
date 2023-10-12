@@ -10,10 +10,13 @@
   <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
     <mat-icon>share</mat-icon>
   </button>
+  <button mat-raised-button color="accent" (click)="openMatDialogPacient()">Inregistreaza Pacient</button>
+
   <section>
     <div class="example-button-row">
-      <button mat-raised-button color="primary">Adauga Programare</button>
+      <button mat-raised-button color="warn" (click)="openMatDialogProgramare()">Adauga Programare</button>
       <!-- <a mat-raised-button href="https://www.google.com/" target="_blank">Link</a> -->
     </div>
   </section>
+
 </mat-toolbar>
