@@ -1,13 +1,25 @@
 <div mat-dialog-title>
     <h1>Formular Inregistrare Pacient</h1>
 </div>
-<div mat-dialog-content>
+<div mat-dialog-content class="content">
+    <div class="row">
     <mat-form-field appearance="outline">
-        <mat-label>LOREM IPSUM</mat-label>
-        <input matInput>
+        <mat-label>Nume</mat-label>
+        <input matInput [(ngModel)]="patientData.nume" name = "nume">
     </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Varsta</mat-label>
+        <input matInput [(ngModel)]="patientData.varsta" name="varsta">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>Nr. Telefon</mat-label>
+        <input matInput [(ngModel)]="patientData.telefon" name="telefon">
+    </mat-form-field>
+    </div>
 </div>
 <div mat-dialog-actions>
-    <button mat-raised-button>Anuleaza</button>
-    <button mat-raised-button color="primary">Salveaza</button>
+    <button mat-raised-button (click)="onCancelClick()">Anuleaza</button>
+    <button mat-raised-button color="primary" (click)="onSaveClick()">Salveaza</button>
 </div>

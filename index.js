@@ -33,6 +33,11 @@ app.get('/programare', (req, res) => {
     });
 });
 
+app.post('/api/update-patient', (req, res) => {
+    const updatedPatientData = req.body;
+    client.connect();
+    client.query('INSERT INTO Pacient(Nume, Varsta, Telefon) VALUES($patientData.nume, $patientData.varsta, patientData.telefon')
+})
 
 function renderProgramareTable(data){
     const rows = data.map(row => {
