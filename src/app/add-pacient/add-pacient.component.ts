@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   templateUrl: './add-pacient.component.html',
   styleUrls: ['./add-pacient.component.css']
 })
+
 export class AddPacientComponent {
   patientData: any = {
     nume: '',
@@ -22,6 +23,10 @@ export class AddPacientComponent {
     this.dialogRef.close();
   }
   onSaveClick(): void {
-    this.dialogRef.close(this.patientData);
-  }
+    //this.http.post('api/save-patient', this.patientData).subscribe((response) =>{
+     // console.log(response);
+      this.dialogRef.close();
+    };
+    //this.dialogRef.close(this.patientData);
 }
+

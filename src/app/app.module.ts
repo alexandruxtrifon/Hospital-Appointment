@@ -14,7 +14,9 @@ import { AddAppointmentComponent } from './add-appointment/add-appointment.compo
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule} from '@angular/material/input';
 import { AddPacientComponent } from './add-pacient/add-pacient.component';
-
+import {Component} from '@angular/core';
+import {NgFor} from '@angular/common';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,12 @@ import { AddPacientComponent } from './add-pacient/add-pacient.component';
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    NgFor,
+    MatInputModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

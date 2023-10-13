@@ -5,10 +5,10 @@ const cors = require('cors');
 const client = new Client({
     host: "localhost",
     user: "postgres",
-    post: 5432,
+    port: 5432,
     password: "0512",
     database: "hospital_appointment"
-})
+});
 
 const app = express();
 const port = 3000;
@@ -18,25 +18,61 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(express.json());
+
+app.listen(port, () =>{
+    console.log(`Server is running on port ${port}`);
+});
+client.connect();
+
+app.get('/', (req, res) => res.json({ message: 'Hello World' }))
 
 app.get('/programare', (req, res) => {
-    client.connect();
+    //client.connect();
 
     client.query('SELECT * FROM Programare', (err, result) => {
         if(!err) {
-            res.send(renderProgramareTable(result.rows));
+            res.send(result.rows);
         } else{
             console.log(err.message);
             res.status(500).send('Internal Server Error');
         }
-        client.end();
+        //client.end();
+    });
+});
+
+app.get('/api/get-patient-names', (req, res) => {
+    //client.connect();
+    client.query('SELECT Nume FROM Pacient', (err, result) => {
+        if(!err){
+            //const names = result.rows.map((row) => row.Nume);
+            //res.send(names);
+            res.send(result.rows);
+        } //else {
+          //  console.log(err.message);
+          //  res.status(500).send('Internal Server Error');
+        //}
+    //client.end();
     });
 });
 
 app.post('/api/update-patient', (req, res) => {
     const updatedPatientData = req.body;
     client.connect();
-    client.query('INSERT INTO Pacient(Nume, Varsta, Telefon) VALUES($patientData.nume, $patientData.varsta, patientData.telefon')
+    const insertQuery = 'INSERT INTO Pacient(Nume, Varsta, Telefon) VALUES($1, $2, $3';
+
+    const values = [updatedPatientData.nume, updatedPatientData.varsta, updatedPatientData.telefon];
+    client.query(insertQuery, values, (err, result) => {
+        if(!err) {
+            console.log('Patient data inserted successfully');
+            res.json({ message: 'Datele pacientului au fost introduse cu succes'});
+
+        } else {
+            console.error(err.message);
+            res.status(500).send('Internal Server Error');
+        }
+        client.end();
+    })
 })
 
 function renderProgramareTable(data){
@@ -71,16 +107,13 @@ function renderProgramareTable(data){
         </html>`;
 }
 
-app.listen(port, () =>{
-    console.log(`Server is running on port ${port}`);
-});
-//client.connect();
 
-//client.query(`Select * from Pacient`, (err, res)=>{
+
+//client.query(`Select Nume from Pacient`, (err, res)=>{
 //    if(!err){
 //        console.log(res.rows);
 //    } else{
-//        console.log(err.message);
-//    }
-//    client.end;
+//       console.log(err.message);
+//   }
+ //  client.end;
 //})
