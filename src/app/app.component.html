@@ -27,8 +27,8 @@
       <th>Ora</th>
       <th>Status Programare</th>
       <th>Prioritate</th>
-      <th>PREIA</th>
-      <th>MODIFICA/ANULEAZA</th>
+      <th>Actiuni</th>
+      <th>Modifica</th>
     </tr>
   </thead>
   <tbody>
@@ -38,7 +38,17 @@
       <td>{{appointment.telefon}}</td>
       <td>{{appointment.dataprogramare | date:'shortDate'}}</td>
       <td>{{appointment.oraprogramare.substring(0, 5)}}</td>
-      <td>{{appointment.statusprogramare}}</td>
+      <td [ngClass]="{
+        'programat': appointment.statusprogramare == 1,
+        'preluat': appointment.statusprogramare == 2,
+        'incheiat': appointment.statusprogramare == 3,
+        'anulat': appointment.statusprogramare == 4
+      }">
+          {{appointment.statusprogramare == 1 ? 'Programat' :
+            appointment.statusprogramare == 2 ? 'Preluat' :
+            appointment.statusprogramare == 3 ? 'Incheiat' :
+            appointment.statusprogramare == 4 ? 'Anulat' : ''}}
+          </td>
       <td>{{appointment.prioritate}}</td>
       <td><button class="preia-button">Preia</button></td>
       <td>

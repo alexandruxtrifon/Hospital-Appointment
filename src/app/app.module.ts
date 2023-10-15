@@ -17,12 +17,14 @@ import { AddPacientComponent } from './add-pacient/add-pacient.component';
 import {Component} from '@angular/core';
 import {NgFor} from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
+import { AppConfigComponent } from './app-config/app-config.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddAppointmentComponent,
-    AddPacientComponent
+    AddPacientComponent,
+    AppConfigComponent
   ],
   imports: [
     BrowserModule,

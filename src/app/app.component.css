@@ -25,6 +25,10 @@ table {
   align-items: center;
 }
 
+table.styled-table {
+  border-radius: 10px;
+}
+
 .container {
   margin-left: auto;
   margin-right: auto;
@@ -35,6 +39,8 @@ table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
+
+
 }
 
 .styled-table th, .styled-table td {
@@ -75,4 +81,25 @@ table {
 .edit-button:hover,
 .cancel-button:hover {
   background-color: #0056b3;
+}
+
+
+.programat {
+  background-color: orange;
+  color: white;
+}
+
+.preluat {
+  background-color: blue;
+  color: black;
+}
+
+.incheiat {
+  background-color: green;
+  color: white;
+}
+
+.anulat {
+  background-color: red;
+  color: white;
 }
