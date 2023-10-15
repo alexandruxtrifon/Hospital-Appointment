@@ -1,6 +1,7 @@
 <div mat-dialog-title>
     <h1>Formular Inregistrare Pacient</h1>
 </div>
+<form action="/api/save-patient" >
 <div mat-dialog-content class="content">
     <div class="row">
     <mat-form-field appearance="outline">
@@ -20,6 +21,7 @@
     </div>
 </div>
 <div mat-dialog-actions>
-    <button mat-raised-button (click)="onCancelClick()">Anuleaza</button>
-    <button mat-raised-button color="primary" (click)="onSaveClick()">Salveaza</button>
+    <button mat-raised-button class="action" (click)="onCancelClick()" class="mr-2">Anuleaza</button>
+    <button mat-raised-button class="action" color="primary" (click)="onSaveClick()" class="ml-2">Salveaza</button>
 </div>
+</form>

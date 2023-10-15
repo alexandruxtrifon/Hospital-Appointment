@@ -27,7 +27,7 @@ client.connect();
 
 app.get('/', (req, res) => res.json({ message: 'Hello World' }))
 
-app.get('/programare', (req, res) => {
+app.get('/api/get-appointments', (req, res) => {
     //client.connect();
 
     client.query('SELECT * FROM Programare', (err, result) => {
@@ -56,12 +56,11 @@ app.get('/api/get-patient-names', (req, res) => {
     });
 });
 
-app.post('/api/update-patient', (req, res) => {
-    const updatedPatientData = req.body;
-    client.connect();
-    const insertQuery = 'INSERT INTO Pacient(Nume, Varsta, Telefon) VALUES($1, $2, $3';
-
-    const values = [updatedPatientData.nume, updatedPatientData.varsta, updatedPatientData.telefon];
+app.post('/api/save-patient', (req, res) => {
+    const patientData = req.body;
+    //client.connect();
+    const insertQuery = 'INSERT INTO Pacient(nume, varsta, telefon) VALUES($1, $2, $3)';
+    const values = [patientData.nume, patientData.varsta, patientData.telefon];
     client.query(insertQuery, values, (err, result) => {
         if(!err) {
             console.log('Patient data inserted successfully');
@@ -71,7 +70,7 @@ app.post('/api/update-patient', (req, res) => {
             console.error(err.message);
             res.status(500).send('Internal Server Error');
         }
-        client.end();
+        //client.end();
     })
 })
 

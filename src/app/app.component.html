@@ -15,8 +15,28 @@
   <section>
     <div class="example-button-row">
       <button mat-raised-button color="warn" (click)="openMatDialogProgramare()">Adauga Programare</button>
-      <!-- <a mat-raised-button href="https://www.google.com/" target="_blank">Link</a> -->
     </div>
   </section>
-
 </mat-toolbar>
+<body>
+<h1>Appointment Dataaaa</h1>
+<table>
+  <thead>
+    <tr>
+      <th>CodProgramare</th>
+      <th>CodPacient</th>
+      <th>Prioritate</th>
+      <th>StatusProgramare</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{ "item.CodProgramare" }}</td>
+      <td>{{ "item.CodPacient" }}</td>
+      <td>{{" item.Prioritate "}}</td>
+      <td>{{"item.StatusProgramare" }}</td>
+    </tr>
+  </tbody>
+  <script src="script.js"></script>
+</table>
+</body>
