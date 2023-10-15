@@ -41,6 +41,30 @@ app.get('/api/get-appointments', (req, res) => {
     });
 });
 
+app.get('/api/get-appointment-data', (req,res)=>{
+   //client.connect();
+   const sqlQuery= `SELECT
+        P.nume,
+        P.varsta,
+        P.telefon,
+        PR.prioritate,
+        PR.statusprogramare,
+        PR.dataprogramare,
+        PR.oraprogramare
+        FROM Pacient AS P
+        JOIN Programare AS PR ON P.codpacient = PR.codpacient`;
+        
+    client.query(sqlQuery, (err, result) => {
+        if(!err) {
+            res.json(result.rows);
+        } else {
+            console.log(err.message);
+            res.status(500).send('Internal Server Error');
+        }
+        //client.end();
+    });
+});
+
 app.get('/api/get-patient-names', (req, res) => {
     //client.connect();
     client.query('SELECT Nume FROM Pacient', (err, result) => {

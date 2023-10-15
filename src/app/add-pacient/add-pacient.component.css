@@ -9,5 +9,18 @@
 
 }
 
-.action {  
+.action { 
+    margin-left: auto;
+    margin-right:auto;
 }
+
+.button-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    margin:5px;
+    flex-grow: 1;
+};
