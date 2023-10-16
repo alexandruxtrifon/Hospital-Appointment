@@ -4,7 +4,7 @@
   </button>
   <span>Hospital Appointment</span>
   <span class="example-spacer"></span>
-  <button mat-icon-button class="settings-button">
+  <button mat-icon-button class="settings-button" (click)="openMatDialogConfig()">
     <mat-icon>settings</mat-icon>
   </button>
   <button mat-raised-button color="accent" (click)="openMatDialogPacient()" class="header-button">Inregistreaza Pacient</button>
@@ -25,7 +25,11 @@
       <th>Telefon</th>
       <th>Data Programarii</th>
       <th>Ora</th>
-      <th>Status Programare</th>
+      <th>
+        <mat-card>
+          <mat-card-content>Programare</mat-card-content>
+        </mat-card>
+      </th>
       <th>Prioritate</th>
       <th>Actiuni</th>
       <th>Modifica</th>
@@ -48,7 +52,8 @@
             appointment.statusprogramare == 2 ? 'Preluat' :
             appointment.statusprogramare == 3 ? 'Incheiat' :
             appointment.statusprogramare == 4 ? 'Anulat' : ''}}
-          </td>
+
+      </td>
       <td>{{appointment.prioritate}}</td>
       <td><button class="preia-button">Preia</button></td>
       <td>

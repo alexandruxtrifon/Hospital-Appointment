@@ -18,6 +18,7 @@ import {Component} from '@angular/core';
 import {NgFor} from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
 import { AppConfigComponent } from './app-config/app-config.component';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { AppConfigComponent } from './app-config/app-config.component';
     MatSelectModule,
     NgFor,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

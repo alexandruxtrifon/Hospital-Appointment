@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-app-config',
@@ -7,4 +9,17 @@ import { Component } from '@angular/core';
 })
 export class AppConfigComponent {
 
+  constructor(
+    public dialogRef: MatDialogRef<AppConfigComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private http: HttpClient
+  ) {}
+
+  onCancelClick(): void {
+    this.dialogRef.close();
+  }
+
+  onSaveClick(): void {
+
+  }
 }

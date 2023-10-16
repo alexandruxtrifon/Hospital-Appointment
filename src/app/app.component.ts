@@ -4,7 +4,7 @@ import { AddAppointmentComponent } from './add-appointment/add-appointment.compo
 import { AddPacientComponent } from './add-pacient/add-pacient.component';
 import { HttpClient } from '@angular/common/http';
 import { Time } from '@angular/common';
-
+import { AppConfigComponent } from './app-config/app-config.component';
 interface Appointment{
   nume: string;
   varsta: number;
@@ -34,7 +34,7 @@ export class AppComponent implements OnInit{
     this._dialog.open(AddAppointmentComponent);
   }
   openMatDialogPacient(){
-    this._dialog.open(AddPacientComponent)
+    this._dialog.open(AddPacientComponent);
   }
 
   getAppointments(){
@@ -46,6 +46,10 @@ export class AppComponent implements OnInit{
       (error)=>{
         console.error('Error fetching appointments:', error);
       });
+  }
+
+  openMatDialogConfig(){
+    this._dialog.open(AppConfigComponent);
   }
 }
 
