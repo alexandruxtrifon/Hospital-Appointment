@@ -1,13 +1,15 @@
 <form class="example-form">
 <div>
     <mat-card>
-        <mat-card-content></mat-card-content>
+        <mat-card-content>
+            Durata Programare: {{ durata[0].durataprogramare }}
+        </mat-card-content>
     </mat-card>
 </div>
 
     <mat-form-field class="example-full-width">
-      <mat-label>Favorite food</mat-label>
-      <input matInput placeholder="Ex. Pizza" value="Sushi">
+      <mat-label>Durata</mat-label>
+      <input matInput>
     </mat-form-field>
 <div mat-dialog-actions class="button-container">
     <button mat-raised-button (click)="onCancelClick()">Anuleaza</button>

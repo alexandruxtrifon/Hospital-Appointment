@@ -31,6 +31,9 @@ VALUES
     (2, 2, 1, '21/10/2023', '09:00'),
     (3, 3, 1, '20/10/2023', '08:30');
 --INSERT INTO Programare(1,2,4);
+INSERT INTO Config (DurataProgramare)
+VALUES
+	(30);
 SELECT * FROM Pacient;
 SELECT Nume FROM Pacient;
 SELECT * FROM Programare;

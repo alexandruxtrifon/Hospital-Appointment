@@ -80,6 +80,23 @@ app.get('/api/get-patient-names', (req, res) => {
     });
 });
 
+app.get('/api/get-config', (req, res) => {
+    //client.connect();
+    client.query('SELECT durataprogramare FROM Config', (err, result) => {
+        if(!err) {
+            res.send(result.rows);
+        } else {
+            console.error(err.message);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+        //client.end();
+    });
+});
+
+app.patch('/api/patch-config', (req, res) =>{
+
+});
+
 app.post('/api/save-patient', (req, res) => {
     const patientData = req.body;
     //client.connect();
