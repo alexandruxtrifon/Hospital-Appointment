@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 
-interface Name {
-  value: string;
-  viewValue: string;
+interface Names{
+  nume: string;
 }
-
 @Component({
   selector: 'app-add-appointment',
   templateUrl: './add-appointment.component.html',
@@ -13,17 +12,32 @@ interface Name {
 })
 
 export class AddAppointmentComponent implements OnInit {
-  //names: Name[]= [
-  //  {value: 'nume-1', viewValue: 'Nume'},
-  //  {value: 'nume-2', viewValue: 'Nume2'}
-  //];
-  names: string[] = [];
 
-  constructor (private http: HttpClient){}
+  //patientNames: any = {
+  //  nume: ''
+  //};
+  names: string[]=[];
+  selectedName: string | undefined;
+  constructor (public dialogRef: MatDialogRef<AddAppointmentComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private http: HttpClient){}
 
+  apiGetNames = 'http://localhost:3000/api/get-patient-names';
   ngOnInit(){
-    this.http.get<string[]>('api/get/patient-names').subscribe((data) => {
-      this.names=data;
-    })
+    //this.http.get<string[]>(this.apiGetNames)
+    //.subscribe((data) => {
+    //  this.names=data;
+    //},
+    //(error) => {
+    //  console.error('Error fetching patient names:', error);
+    //});
+    return this.http.get<any[]>(this.apiGetNames)
+    .subscribe((data) =>{
+      this.names = data.map(item => item.nume);
+    },
+    (error) =>{
+      console.error('Error fetching patient names:', error);   
+    });
   }
 }
+

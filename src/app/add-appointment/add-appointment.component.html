@@ -4,10 +4,10 @@
 <div class="row">
 <mat-form-field class="content">
     <mat-label>Numele Pacientului</mat-label>
-    <mat-select>
+    <mat-select [(ngModel)]="selectedName" name="selectedName">
         <mat-option *ngFor="let name of names" [value]="name">
             <!-- AICI {{PLACEHOLDER}}-->
-
+            {{ name }}
         </mat-option>
     </mat-select>
 </mat-form-field>
