@@ -1,7 +1,7 @@
 <div mat-dialog-title>
     <h1>Formular Programare</h1>
 </div>
-<div class="row">
+<div>
 <mat-form-field class="content">
     <mat-label>Numele Pacientului</mat-label>
     <mat-select [(ngModel)]="selectedName" name="selectedName">
@@ -11,6 +11,34 @@
         </mat-option>
     </mat-select>
 </mat-form-field>
+<mat-form-field class="content">
+    <mat-label>Varsta</mat-label>
+    <input matInput [value]="">
+</mat-form-field>
+
+<mat-form-field class="content">
+    <mat-label>Nr. Telefon</mat-label>
+    <input matInput [value]="" readonly>
+</mat-form-field>
+</div>
+<div>
+    <mat-form-field class="content">
+    <mat-label>Choose a date</mat-label>
+    <input matInput [matDatepicker]="picker">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="content">
+        <mat-label>Ora</mat-label>
+        <mat-select >
+            <mat-option *ngFor="let timeSlot of timeSlots" [value]="timeSlot">
+                <!-- AICI {{PLACEHOLDER}}-->
+                {{ timeSlot}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
 </div>
 <div mat-dialog-actions>
     <button mat-raised-button>Anuleaza</button>

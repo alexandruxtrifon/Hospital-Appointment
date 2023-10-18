@@ -13,6 +13,7 @@ interface Names{
 
 export class AddAppointmentComponent implements OnInit {
 
+  timeSlots: string[] = [];
   //patientNames: any = {
   //  nume: ''
   //};
@@ -22,7 +23,8 @@ export class AddAppointmentComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private http: HttpClient){}
 
-  apiGetNames = 'http://localhost:3000/api/get-patient-names';
+  apiGetNames = 'http://localhost:3000/api/get-patient-data';
+  apiGetTimeSlots = 'http://localhost:3000/api/time-slots';
   ngOnInit(){
     //this.http.get<string[]>(this.apiGetNames)
     //.subscribe((data) => {
@@ -31,13 +33,16 @@ export class AddAppointmentComponent implements OnInit {
     //(error) => {
     //  console.error('Error fetching patient names:', error);
     //});
-    return this.http.get<any[]>(this.apiGetNames)
+    this.http.get<any[]>(this.apiGetNames)
     .subscribe((data) =>{
       this.names = data.map(item => item.nume);
     },
     (error) =>{
       console.error('Error fetching patient names:', error);   
     });
+
+    this.http.get<string[]>(this.apiGetTimeSlots).subscribe(data =>{
+      this.timeSlots = data;
+    })
   }
 }
-
