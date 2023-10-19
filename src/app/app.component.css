@@ -49,7 +49,7 @@ table.styled-table {
 }
 
 .styled-table thead {
-  background-color: #333;
+  background-color: #0074d9;
   color: #fff;
 }
 
@@ -102,4 +102,9 @@ table.styled-table {
 .anulat {
   background-color: red;
   color: white;
+}
+
+mat-card{
+  background-color: red;
+  border-radius: 10px;
 }

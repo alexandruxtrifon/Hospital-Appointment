@@ -22,6 +22,9 @@ import {MatCardModule} from '@angular/material/card';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MomentDateModule } from '@angular/material-moment-adapter';
+import {CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
+import {MatTableModule} from '@angular/material/table';
+
 
 @NgModule({
   declarations: [
@@ -49,7 +52,10 @@ import { MomentDateModule } from '@angular/material-moment-adapter';
     FormsModule,
     MatCardModule,
     MatNativeDateModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatTableModule,
+    CdkDrag,
+    CdkDropList
   ],
   providers: [],
   bootstrap: [AppComponent]

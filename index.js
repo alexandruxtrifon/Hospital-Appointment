@@ -164,37 +164,23 @@ app.post('/api/save-patient', (req, res) => {
     })
 })
 
-function renderProgramareTable(data){
-    const rows = data.map(row => {
-        return `
-        <tr>
-            <td>${row.CodProgramare}</td>
-            <td>${row.CodPacient}</td>
-            <td>${row.Prioritate}</td>
-            <td>${row.StatusProgramare}</td>
-        </tr>`;
-    });
+app.post('/api/post-appointment', (req, res) => {
+    const {Nume, DataProgramare, OraProgramare } = req.body;
 
-    return `
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Appointment Data</title>
-        </head>
-        <body>
-            <h1>Appointment Data</h1>
-            <table>
-                <tr>
-                    <th>CodProgramare</th>
-                    <th>CodPacient</th>
-                    <th>Prioritate</th>
-                    <th>StatusProgramare</th>
-                </tr>
-                ${rows.join('')}
-            </table>
-        </body>
-        </html>`;
-}
+    client.query(
+        `INSERT INTO Programare (CodPacient, DataProgramare, OraProgramare)
+        VALUES (( SELECT CodPacient FROM Pacient WHERE Nume = $1), $2, $3)`,
+        [Nume, DataProgramare, OraProgramare],
+        (err) => {
+            if (!err) {
+                res.status(201).json({ message: 'Appointment added successfully' });
+            } else {
+                console.error('Error adding appointment:', err);
+                res.status(500).json({error: 'Internal Server Error' });
+            }
+        }
+    );
+});
 
 function generateTimeSlots(duration){
     const timeSlots = [];

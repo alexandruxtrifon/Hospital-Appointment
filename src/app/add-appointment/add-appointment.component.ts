@@ -4,13 +4,14 @@ import { HttpClient } from '@angular/common/http';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 
-
-interface Names{
+interface Patient{
   nume: string;
+  varsta: number;
+  telefon: string;
 }
 export const MY_DATE_FORMATS = {
   parse: {
-    dateInput: 'DD/MM/YYYY',
+    dateInput: 'DD-MM-YYYY',
   },
   display: {
     dateInput: 'DD/MM/YYYY',
@@ -31,16 +32,18 @@ export const MY_DATE_FORMATS = {
 
 export class AddAppointmentComponent implements OnInit {
 
-  timeSlots: string[] = [];
-  //patientNames: any = {
-  //  nume: ''
-  //};
-  names: string[]=[];
+  //timeSlots: string[] = [];
+  timeSlots: string[] =[];
+
+  //names: string[]=[];
+  names: Patient[] = [];
   selectedName: string | undefined;
 
-  ages: number[]=[];
-  phones: string[]=[];
-  selectedPatient: any = {varsta: null, telefon: null};
+  selectedAge: number | null = null;
+  selectedPhone: string | null = null;
+  //selectedPatient: any = {varsta: null, telefon: null};
+  selectedDate: Date | null = null;
+  selectedTime: string | null = null;
 
   constructor (public dialogRef: MatDialogRef<AddAppointmentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -62,13 +65,27 @@ export class AddAppointmentComponent implements OnInit {
       this.timeSlots = data;
     })
   }
-  fillAgePhone(){
-    if (this.selectedName) {
-      const selectedPatient = this.names.find(patient => patient.nume === this.selectedName);
-      if (selectedPatient) {
-        this.selectedAge = selectedPatient.varsta;
-        this.selectedPhone = selectedPatient.telefon;
-      }
-    }
+  apiPostAppointment = 'http://localhost:3000/api/post-appointment';
+
+  onProgrameazaClick(){
+    const appointmentData = {
+      Nume: this.selectedName,
+      DataProgramare: this.selectedDate,
+      OraProgramare: this.selectedTime,
+    };
+  
+
+  this.http.post(this.apiPostAppointment, appointmentData)
+  .subscribe((response) => {
+    console.log('Appointment added successfully:', response);
+    this.dialogRef.close();
+  },
+  (error) => {
+    console.error('Error adding appointment:', error);
+  }
+  );
+  }
+  onTimeSelected(event: any) {
+    this.selectedTime = event;
   }
 }

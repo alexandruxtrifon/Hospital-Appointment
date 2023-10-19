@@ -5,6 +5,8 @@ import { AddPacientComponent } from './add-pacient/add-pacient.component';
 import { HttpClient } from '@angular/common/http';
 import { Time } from '@angular/common';
 import { AppConfigComponent } from './app-config/app-config.component';
+
+
 interface Appointment{
   nume: string;
   varsta: number;
