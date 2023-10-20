@@ -108,3 +108,18 @@ mat-card{
   background-color: red;
   border-radius: 10px;
 }
+
+.table-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+}
+
+.table-button{
+  border-radius: 50px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}

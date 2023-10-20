@@ -1,7 +1,4 @@
 <mat-toolbar>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-    <mat-icon>menu</mat-icon>
-  </button>
   <span>Hospital Appointment</span>
   <span class="example-spacer"></span>
   <button mat-icon-button class="settings-button" (click)="openMatDialogConfig()">
@@ -15,7 +12,7 @@
     </div>
   </section>
 </mat-toolbar>
-<body>
+<!--<body>
 <h1>Programari</h1>
 <div>
 <table class="styled-table">
@@ -28,7 +25,7 @@
       <th>Ora</th>
       <th>
         <mat-card>
-          <mat-card-content color="red">Programare</mat-card-content>
+          <mat-card-content>Programare</mat-card-content>
         </mat-card>
       </th>
       <th>Prioritate</th>
@@ -66,4 +63,85 @@
   <script src="script.js"></script>
 </table>
 </div>
-</body>
+</body> -->
+
+<div class="table-container">
+<body>
+  <h1>Programari</h1>
+  
+    <button mat-raised-button class="table-button"> filtreaza dupa data </button>
+    <button mat-raised-button class="table-button"> ordoneaza si reprogrameaza dupa prioritate </button>
+  
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8"
+  cdkDropList
+  cdkDropListOrientation="horizontal"
+  (cdkDropListDropped)="drop($event)">
+    <ng-container matColumnDef="nume">
+      <th mat-header-cell cdkDrag *matHeaderCellDef> Nume Pacient </th>
+      <td mat-cell *matCellDef="let appointment"> {{appointment.nume}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="varsta">
+      <th mat-header-cell cdkDrag *matHeaderCellDef> Varsta </th>
+      <td mat-cell *matCellDef="let appointment"> {{appointment.varsta}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="telefon">
+      <th mat-header-cell cdkDrag *matHeaderCellDef> Telefon </th>
+      <td mat-cell *matCellDef="let appointment"> {{appointment.telefon}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dataprogramare">
+      <th mat-header-cell cdkDrag *matHeaderCellDef> Data Programarii </th>
+      <td mat-cell *matCellDef="let appointment"> {{appointment.dataprogramare | date:'shortDate'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="oraprogramare">
+      <th mat-header-cell cdkDrag *matHeaderCellDef> Ora </th>
+      <td mat-cell *matCellDef="let appointment"> {{appointment.oraprogramare}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="statusprogramare">
+      <th mat-header-cell cdkDrag *matHeaderCellDef> Status Programare </th>
+      <td mat-cell *matCellDef="let appointment" [ngClass]="{
+        'programat': appointment.statusprogramare == 1,
+        'preluat': appointment.statusprogramare == 2,
+        'incheiat': appointment.statusprogramare == 3,
+        'anulat': appointment.statusprogramare == 4
+      }">
+        {{appointment.statusprogramare == 1 ? 'Programat' :
+          appointment.statusprogramare == 2 ? 'Preluat' :
+          appointment.statusprogramare == 3 ? 'Incheiat' :
+          appointment.statusprogramare == 4 ? 'Anulat' : ''}}
+      </td>
+      </ng-container>
+      <ng-container matColumnDef="prioritate">
+        <th mat-header-cell cdkDrag *matHeaderCellDef> Prioritate </th>
+        <td mat-cell *matCellDef="let appointment"> {{appointment.prioritate}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell cdkDrag *matHeaderCellDef> Actiuni </th>
+        <td mat-cell *matCellDef="let appointment">
+          <button class="preia-button"
+          (click)="onPreiaClick(appointment)" >
+            {{ appointment.statusprogramare === 1 ? 'Preia' : 
+            appointment.statusprogramare === 2 ?'Finalizeaza' : '' }}
+      
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="modify">
+        <th mat-header-cell cdkDrag *matHeaderCellDef> Modifica </th>
+        <td mat-cell *matCellDef="let appointment">
+          <button class="edit-button" ><i class="fas fa-edit"></i>Modifica</button>
+          <button class="cancel-button"><i class="fas fa-times"></i>Anuleaza</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</mat-table>
+  </body>
+</div>

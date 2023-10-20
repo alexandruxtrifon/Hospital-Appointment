@@ -88,4 +88,8 @@ export class AddAppointmentComponent implements OnInit {
   onTimeSelected(event: any) {
     this.selectedTime = event;
   }
+
+  onCancelClick() {
+    this.dialogRef.close();
+  }
 }

@@ -47,6 +47,7 @@ app.get('/api/get-appointment-data', (req,res)=>{
         P.nume,
         P.varsta,
         P.telefon,
+        PR.codprogramare,
         PR.prioritate,
         PR.statusprogramare,
         PR.dataprogramare,
@@ -219,8 +220,33 @@ app.get('/api/time-slots', (req, res) => {
     });
 });
 
+app.patch('/api/update-statusprogramare/1/:programareId', (req, res) => {
+    const programareId = req.params.programareId;
 
+    client.query('UPDATE Programare SET statusprogramare = 2 WHERE CodProgramare = $1',
+    [programareId], (err, result) => {
+        if(err){
+            console.error('Error updating Status Programare:', err);
+            res.status(500).json({success: false, error: 'Internal Server Error'});
+            return;
+        }
+        res.status(200).json({success: true, message: 'Status Programare updated successfully'});
+    });
+});
 
+app.patch('/api/update-statusprogramare/2/:programareId', (req, res) => {
+    const programareId = req.params.programareId;
+
+    client.query('UPDATE Programare SET statusprogramare = 3 WHERE CodProgramare = $1',
+    [programareId], (err, result) => {
+        if(err){
+            console.error('Error updating Status Programare:', err);
+            res.status(500).json({success: false, error: 'Internal Server Error'});
+            return;
+        }
+        res.status(200).json({success: true, message: 'Status Programare updated successfully'});
+    });
+});
 
 //client.query(`Select Nume from Pacient`, (err, res)=>{
 //    if(!err){
