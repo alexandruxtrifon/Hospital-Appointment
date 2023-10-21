@@ -38,3 +38,28 @@ SELECT * FROM Pacient;
 SELECT Nume FROM Pacient;
 SELECT * FROM Programare;
 SELECT * FROM Config;
+
+
+
+
+WITH working_hours AS (
+  SELECT generate_series(
+           '2023-10-22 08:00'::timestamp,
+           '2023-10-22 22:00'::timestamp,
+           '30 minutes'::interval) AS times
+)
+
+INSERT INTO Programare (CodPacient, Prioritate, StatusProgramare, DataProgramare, OraProgramare)
+SELECT
+  CodPacient,
+  CASE
+    WHEN random() < 0.33 THEN 1
+    WHEN random() < 0.67 THEN 2
+    ELSE 3
+  END AS Prioritate,
+  1 AS StatusProgramare, 
+  '2023-10-22' AS DataProgramare,
+  CAST(to_char(times, 'HH24:MI') AS time) AS OraProgramare 
+FROM Pacient
+JOIN working_hours ON random() < 0.95
+LIMIT 15;

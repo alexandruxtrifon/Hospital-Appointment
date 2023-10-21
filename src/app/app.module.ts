@@ -24,6 +24,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MomentDateModule } from '@angular/material-moment-adapter';
 import {CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
 import {MatTableModule} from '@angular/material/table';
+import {MatSnackBar, MatSnackBarRef, MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -45,7 +46,6 @@ import {MatTableModule} from '@angular/material/table';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    MatFormFieldModule,
     MatSelectModule,
     NgFor,
     MatInputModule,
@@ -55,7 +55,8 @@ import {MatTableModule} from '@angular/material/table';
     MatDatepickerModule,
     MatTableModule,
     CdkDrag,
-    CdkDropList
+    CdkDropList,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -68,10 +68,22 @@
 <div class="table-container">
 <body>
   <h1>Programari</h1>
-  
-    <button mat-raised-button class="table-button"> filtreaza dupa data </button>
-    <button mat-raised-button class="table-button"> ordoneaza si reprogrameaza dupa prioritate </button>
-  
+  <div>
+    <mat-form-field class="button-top">
+      <mat-label>Alegeti o data</mat-label>
+      <input matInput [matDatepicker]="picker"
+      [(ngModel)]="selectedDate"
+      (dateChange)="fetchAppointmentsByDate()">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <button mat-raised-button 
+    color="accent" class="button-top"
+    (click)="{}">
+      Ordoneaza si reprogrameaza
+    </button>
+  </div>
   <mat-table [dataSource]="dataSource" class="mat-elevation-z8"
   cdkDropList
   cdkDropListOrientation="horizontal"

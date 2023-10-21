@@ -2,6 +2,9 @@ const {Client} = require('pg')
 const express = require('express');
 const cors = require('cors');
 
+const currentDateISO = new Date().toISOString();
+const currentDate = currentDateISO.split('T')[0];
+
 const client = new Client({
     host: "localhost",
     user: "postgres",
@@ -38,6 +41,56 @@ app.get('/api/get-appointments', (req, res) => {
             res.status(500).send('Internal Server Error');
         }
         //client.end();
+    });
+});
+
+app.get('/api/get-appointments/today', (req, res) => {
+    client.query(
+        `SELECT
+        P.nume,
+        P.varsta,
+        P.telefon,
+        PR.codprogramare,
+        PR.prioritate,
+        PR.statusprogramare,
+        PR.dataprogramare,
+        PR.oraprogramare
+        FROM Pacient AS P
+        JOIN Programare AS PR ON P.codpacient = PR.codpacient
+        WHERE dataprogramare = ${currentDate}`, (err, result) =>{
+            if(err){
+                console.error('Error fetching Appointments by date', err);
+                res.status(500).json({success: false, error: 'Internal Server Error'});
+                return;
+            }
+            res.send(result.rows);   
+        });
+});
+
+app.get('/api/get-appointments/:calendar', (req, res) => {
+    const calendar = req.params.calendar;
+
+    client.query(
+        `SELECT
+        P.nume,
+        P.varsta,
+        P.telefon,
+        PR.codprogramare,
+        PR.prioritate,
+        PR.statusprogramare,
+        PR.dataprogramare,
+        PR.oraprogramare
+        FROM Pacient AS P
+        JOIN Programare AS PR ON P.codpacient = PR.codpacient
+        WHERE dataprogramare = $1`,
+    [calendar], (err, result) => {
+        if(err){
+            console.error('Error fetching Appointments by date', err);
+            res.status(500).json({success: false, error: 'Internal Server Error'});
+            return;
+        }
+        //res.status(200).json({success: true, message: 'Fetched Appointments by date'})
+        res.send(result.rows);
     });
 });
 
@@ -247,6 +300,8 @@ app.patch('/api/update-statusprogramare/2/:programareId', (req, res) => {
         res.status(200).json({success: true, message: 'Status Programare updated successfully'});
     });
 });
+
+
 
 //client.query(`Select Nume from Pacient`, (err, res)=>{
 //    if(!err){
