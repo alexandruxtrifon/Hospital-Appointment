@@ -76,10 +76,9 @@ export class AppComponent implements OnInit{
 
   onPreiaClick(appointment: Appointment) {
     if (appointment.statusprogramare === 1) {
-      this.httpClient.patch<any>
-      (`http://localhost:3000/api/update-statusprogramare/1/${appointment.codprogramare}`, null)
+      this.httpClient.patch<any>(`http://localhost:3000/api/update-statusprogramare/1/${appointment.codprogramare}`, null)
         .subscribe((response) => {
-          if(response.success) {
+          if (response.success) {
             appointment.statusprogramare = 2;
           } else {
             console.error('Error updating Programare Status');
@@ -88,14 +87,11 @@ export class AppComponent implements OnInit{
         (error) => {
           console.error('Error updating Programare Status:', error);
         });
-    }
-    // IF appointment.statusprogramare === 2 DE FACUT MAINE
-    if (appointment.statusprogramare === 2) {
-      this.httpClient.patch<any>
-      (`http://localhost:3000/api/update-statusprogramare/2/${appointment.codprogramare}`, null)
+    } else if (appointment.statusprogramare === 2) {
+      this.httpClient.patch<any>(`http://localhost:3000/api/update-statusprogramare/2/${appointment.codprogramare}`, null)
         .subscribe((response) => {
-          if(response.success) {
-            appointment.statusprogramare = 2;
+          if (response.success) {
+            appointment.statusprogramare = 3;
           } else {
             console.error('Error updating Programare Status');
           }
@@ -105,5 +101,17 @@ export class AppComponent implements OnInit{
         });
     }
   }
+
+  fetchUpdatedData() {
+    this.httpClient
+    .get<Appointment[]>('http://localhost:3000/api/get-appointment-data')
+    .subscribe((data) => {
+      this.dataSource.data = data;
+    },
+    (error) => {
+      console.error('Error fetching appointments:', error);
+    });
+  }
+
 }
 

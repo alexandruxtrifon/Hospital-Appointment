@@ -124,9 +124,9 @@
         <th mat-header-cell cdkDrag *matHeaderCellDef> Actiuni </th>
         <td mat-cell *matCellDef="let appointment">
           <button class="preia-button"
-          (click)="onPreiaClick(appointment)" >
-            {{ appointment.statusprogramare === 1 ? 'Preia' : 
-            appointment.statusprogramare === 2 ?'Finalizeaza' : '' }}
+          (click)="onPreiaClick(appointment)"
+          [disabled]="appointment.statusprogramare > 2" >
+            {{ appointment.statusprogramare === 1 ? 'Preia' : 'Finalizeaza' }}
       
           </button>
         </td>
