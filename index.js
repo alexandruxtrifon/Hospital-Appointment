@@ -45,6 +45,7 @@ app.get('/api/get-appointments', (req, res) => {
 });
 
 app.get('/api/get-appointments/today', (req, res) => {
+    //client.connect();
     client.query(
         `SELECT
         P.nume,
@@ -57,18 +58,20 @@ app.get('/api/get-appointments/today', (req, res) => {
         PR.oraprogramare
         FROM Pacient AS P
         JOIN Programare AS PR ON P.codpacient = PR.codpacient
-        WHERE dataprogramare = ${currentDate}`, (err, result) =>{
+        WHERE dataprogramare = $1`, [currentDate], (err, result) =>{
             if(err){
                 console.error('Error fetching Appointments by date', err);
                 res.status(500).json({success: false, error: 'Internal Server Error'});
                 return;
             }
-            res.send(result.rows);   
+            res.send(result.rows);  
         });
+    //client.end(); 
 });
 
 app.get('/api/get-appointments/:calendar', (req, res) => {
     const calendar = req.params.calendar;
+    //client.connect();
 
     client.query(
         `SELECT
@@ -92,6 +95,7 @@ app.get('/api/get-appointments/:calendar', (req, res) => {
         //res.status(200).json({success: true, message: 'Fetched Appointments by date'})
         res.send(result.rows);
     });
+    //client.end();
 });
 
 app.get('/api/get-appointment-data', (req,res)=>{
@@ -219,6 +223,8 @@ app.post('/api/save-patient', (req, res) => {
 })
 
 app.post('/api/post-appointment', (req, res) => {
+    //client.connect();
+
     const {Nume, DataProgramare, OraProgramare } = req.body;
 
     client.query(
@@ -232,6 +238,7 @@ app.post('/api/post-appointment', (req, res) => {
                 console.error('Error adding appointment:', err);
                 res.status(500).json({error: 'Internal Server Error' });
             }
+            //client.end();
         }
     );
 });

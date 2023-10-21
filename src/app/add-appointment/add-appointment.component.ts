@@ -59,7 +59,6 @@ export class AddAppointmentComponent implements OnInit {
     (error) =>{
       console.error('Error fetching patient data:', error);   
     });
-    // am aici o idee
 
     this.http.get<string[]>(this.apiGetTimeSlots).subscribe(data =>{
       this.timeSlots = data;
