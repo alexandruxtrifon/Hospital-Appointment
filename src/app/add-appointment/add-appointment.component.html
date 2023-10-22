@@ -12,19 +12,16 @@
     </mat-select>
 </mat-form-field>
 <mat-form-field class="content">
-    <mat-label>Varsta</mat-label>
-    <input matInput [(ngModel)]="selectedAge" name="varsta">
-</mat-form-field>
-
-<mat-form-field class="content">
-    <mat-label>Nr. Telefon</mat-label>
-    <input matInput [(ngModel)]="selectedPhone" name="telefon" readonly>
+    <mat-label>Prioritate</mat-label>
+    <input matInput name="prioritate">
 </mat-form-field>
 </div>
 <div>
     <mat-form-field class="content">
     <mat-label>Choose a date</mat-label>
-    <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" name="selectedDate">
+    <input matInput [matDatepicker]="picker" 
+    [(ngModel)]="selectedDate" name="selectedDate"
+    (ngModelChange)="fetchAvailableTimeSlots(selectedDate)">
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>

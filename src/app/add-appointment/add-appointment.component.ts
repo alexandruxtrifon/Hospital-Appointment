@@ -3,6 +3,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { DateTime } from 'luxon';
+
 
 interface Patient{
   nume: string;
@@ -27,7 +29,7 @@ export const MY_DATE_FORMATS = {
   templateUrl: './add-appointment.component.html',
   styleUrls: ['./add-appointment.component.css'],
   providers: [
-    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS} ]
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS}]
 })
 
 export class AddAppointmentComponent implements OnInit {
@@ -62,16 +64,22 @@ export class AddAppointmentComponent implements OnInit {
 
     this.http.get<string[]>(this.apiGetTimeSlots).subscribe(data =>{
       this.timeSlots = data;
-    })
-  }
+    
+    });
+}
+  
   apiPostAppointment = 'http://localhost:3000/api/post-appointment';
 
   onProgrameazaClick(){
+    if(this.selectedDate){
+    const formattedDate = this.formatDate(this.selectedDate);
+
     const appointmentData = {
       Nume: this.selectedName,
-      DataProgramare: this.selectedDate,
+      DataProgramare: formattedDate,
       OraProgramare: this.selectedTime,
     };
+    console.log(appointmentData);
   
 
   this.http.post(this.apiPostAppointment, appointmentData)
@@ -83,12 +91,31 @@ export class AddAppointmentComponent implements OnInit {
     console.error('Error adding appointment:', error);
   }
   );
-  }
+}
+}
   onTimeSelected(event: any) {
     this.selectedTime = event;
   }
 
   onCancelClick() {
     this.dialogRef.close();
+  }
+
+  fetchAvailableTimeSlots(selectedDate: Date | null) {
+    if(selectedDate){
+      const formattedDate = this.formatDate(selectedDate);
+      this.http.get<string[]>(`http://localhost:3000/api/time-slots/${formattedDate}`)
+        .subscribe(data => {
+          this.timeSlots = data;
+        }, error => {
+          console.error('error fetching available time slots:', error)
+        });
+    }
+  }
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 }

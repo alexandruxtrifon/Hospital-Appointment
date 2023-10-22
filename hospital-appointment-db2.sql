@@ -41,7 +41,15 @@ SELECT * FROM Config;
 
 
 
-
+INSERT INTO Pacient (Nume, Varsta, Telefon)
+VALUES
+  ('Ana Popescu', 25, '0721123456'),
+  ('Mihai Ionescu', 40, '0732123456'),
+  ('Elena Georgescu', 33, '0743123456'),
+  ('Ion Marin', 60, '0754123456'),
+  ('Maria Stoica', 28, '0765123456');
+  
+  
 WITH working_hours AS (
   SELECT generate_series(
            '2023-10-22 08:00'::timestamp,

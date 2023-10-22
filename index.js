@@ -1,10 +1,15 @@
 const {Client} = require('pg')
 const express = require('express');
 const cors = require('cors');
+const { DateTime } = require("luxon");
 
-const currentDateISO = new Date().toISOString();
-const currentDate = currentDateISO.split('T')[0];
+//const currentDateISO = new Date().toISOString();
+//const currentDateLocal = new Date().toLocaleDateString();
+//const currentDate = currentDateISO.split('T')[0];
 
+const currentDate = DateTime.now().toFormat('MM-dd-yyyy')
+
+console.log(currentDate);
 const client = new Client({
     host: "localhost",
     user: "postgres",
@@ -269,7 +274,7 @@ function getDuration(callback) {
     });
 }
 
-app.get('/api/time-slots', (req, res) => {
+app.get('/api/time-slots',  (req, res) => {
     getDuration((err, duration) => {
         if (err) {
             res.status(500).json({error: 'Error getting duration from the database' });
@@ -278,7 +283,50 @@ app.get('/api/time-slots', (req, res) => {
         const timeSlots = generateTimeSlots(duration);
         res.json(timeSlots);
     });
+
 });
+
+app.get('/api/time-slots/:date', (req, res) => {
+    const selectedDate = req.params.date;
+
+    getDuration((err, duration) =>{
+        if(err) {
+            console.error('error getting duration from the database', err);
+            res.status(500).json({success: false, error: 'internal server error'});
+            return;
+        }
+
+        const timeSlots = generateTimeSlots(duration);
+
+        client.query('SELECT oraprogramare FROM Programare WHERE dataprogramare = $1',
+        [selectedDate], (err, result) => {
+            if (err) {
+                console.error('error fetching oraprogramare from the database', err);
+                res.status(500).json({success:false, error: 'internal server error'});
+                return;
+            } else {
+                const oraprogramare = result.rows.map((row) => row.oraprogramare);
+
+                const uncommonTimes = timeSlots.filter(timeSlot => !oraprogramare.some(apptTime => apptTime.substring(0, 5) === timeSlot));
+
+                res.json(uncommonTimes);
+            }
+        });
+    })
+});
+    /*
+    const selectedDate = req.params.date;
+    client.query('SELECT oraprogramare FROM Programare WHERE dataprogramare != $1',
+    [selectedDate], (err, result) => {
+        if (err) {
+            console.error('Error fetching oraprogramare from the database', err);
+            res.status(500).json({ success: false, error: 'internal server error'});
+        } else {
+            const oraprogramare = result.rows.map((row) => row.oraprogramare);            
+            res.status(200).json({success: true, oraprogramare});
+        }
+    });
+});*/
 
 app.patch('/api/update-statusprogramare/1/:programareId', (req, res) => {
     const programareId = req.params.programareId;
