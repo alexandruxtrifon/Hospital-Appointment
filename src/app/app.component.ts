@@ -23,7 +23,7 @@ interface Appointment{
   prioritate: number;
   statusprogramare: number;
   dataprogramare: Date;
-  oraprogramare: string; //in js nu exista echivalentul la datatype time
+  oraprogramare: string;
   
 }
 
@@ -47,9 +47,10 @@ export class AppComponent implements OnInit{
 
   ngOnInit(){
     this.getAppointments();
-    this.dataSource.sort = this.sort;
-    this.sort.active= 'oraprogramare';
-    this.sort.direction= 'asc';
+    //this.dataSource.sort = this.sort;
+    //this.sort.active= 'oraprogramare';
+    //this.sort.direction= 'asc';
+    this.sortTable();
   }
 
   announceSortChange(sortState: Sort) {
@@ -66,8 +67,11 @@ export class AppComponent implements OnInit{
   openMatDialogPacient(){
     this._dialog.open(AddPacientComponent);
   }
+  
   openMatDialogModifica(){
-    this._dialog.open(EditAppointmentComponent);
+    const dialogRef = this._dialog.open(EditAppointmentComponent, {
+    });
+  
   }
   oldgetAppointments(){
     this.httpClient
@@ -194,10 +198,20 @@ export class AppComponent implements OnInit{
 
     this.dataSource.sort = this.sort;
   }
+  sortTable() {
+    const data = this.dataSource.data;
+    data.sort((a, b) => {
+      const oraA = a.oraprogramare;
+      const oraB = b.oraprogramare;
+      return oraA.localeCompare(oraB);
+    });
+    this.dataSource.data = data;
 
+  }
+  apiDelete = 'http://localhost:3000/api/delete-rearrange';
   ordoneazaReprogrameaza() {
     if (this.dataSource) {
-      this.tableData = this.dataSource.data.map((appointment: any) => ({
+      this.tableData = this.dataSource.data.sort((a,b)=>a.prioritate - b.prioritate).map((appointment: any) => ({
         name: appointment.nume,
         age: appointment.varsta,
         appointmentDate: appointment.dataprogramare,
@@ -206,6 +220,8 @@ export class AppComponent implements OnInit{
         priority: appointment.prioritate,
       }));
       console.log(this.tableData);
+      const formattedDate = this.formatDate(this.selectedDate);
+      //this.httpClient.delete<Appointment[]>(this.apiDelete, formattedDate)
     }
   }
   getStatusLabel(status: number): number {

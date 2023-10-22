@@ -206,7 +206,15 @@ app.get('/api/get-config', (req, res) => {
 });
 
 app.patch('/api/patch-config', (req, res) =>{
-
+    client.query('UPDATE Config SET durataprogramare = $1',
+    [durata], (err,result) => {
+        if(err){
+            console.error('error updating appointment duration', err);
+            res.status(500).json({success:false,error:'internal server error'});
+            return;
+        }
+        res.status(200).json({success:true, message:'appointment duration updated successfully'});
+    })
 });
 
 app.post('/api/save-patient', (req, res) => {
