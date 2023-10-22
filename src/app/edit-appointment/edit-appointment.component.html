@@ -1,0 +1,15 @@
+<p>edit-appointment works!</p>
+<mat-form-field class="content">
+    <mat-label>Ora</mat-label>
+    <mat-select [(ngModel)]="selectedTime" name="selectedTime">
+        <mat-option *ngFor="let timeSlot of timeSlots" [value]="timeSlot" (ngModelChange)="onTimeSelected($event)">
+            <!-- AICI {{PLACEHOLDER}}-->
+            {{ timeSlot}}
+        </mat-option>
+    </mat-select>
+
+</mat-form-field>
+<div mat-dialog-actions>
+        <button mat-raised-button (click)="onCancelClick()">Anuleaza</button>
+        <button mat-raised-button color="primary" (click)="editClick()">Modifica</button>
+</div>

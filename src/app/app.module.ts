@@ -26,14 +26,17 @@ import {CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray} from '@angular/cdk/d
 import {MatTableModule} from '@angular/material/table';
 import {MatSnackBar, MatSnackBarRef, MatSnackBarModule} from '@angular/material/snack-bar';
 import { DateTime } from 'luxon';
-
+import { MatSortModule } from '@angular/material/sort';
+import { EditAppointmentComponent } from './edit-appointment/edit-appointment.component';
+import {Sort} from '@angular/material/sort';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddAppointmentComponent,
     AddPacientComponent,
-    AppConfigComponent
+    AppConfigComponent,
+    EditAppointmentComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +60,8 @@ import { DateTime } from 'luxon';
     MatTableModule,
     CdkDrag,
     CdkDropList,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent]

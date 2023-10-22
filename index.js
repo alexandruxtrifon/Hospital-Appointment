@@ -230,12 +230,12 @@ app.post('/api/save-patient', (req, res) => {
 app.post('/api/post-appointment', (req, res) => {
     //client.connect();
 
-    const {Nume, DataProgramare, OraProgramare } = req.body;
+    const {Nume, DataProgramare, OraProgramare, Prioritate, StatusProgramare } = req.body;
 
     client.query(
-        `INSERT INTO Programare (CodPacient, DataProgramare, OraProgramare)
-        VALUES (( SELECT CodPacient FROM Pacient WHERE Nume = $1), $2, $3)`,
-        [Nume, DataProgramare, OraProgramare],
+        `INSERT INTO Programare (CodPacient, DataProgramare, OraProgramare, Prioritate, StatusProgramare)
+        VALUES (( SELECT CodPacient FROM Pacient WHERE Nume = $1), $2, $3, $4, $5)`,
+        [Nume, DataProgramare, OraProgramare, Prioritate, StatusProgramare],
         (err) => {
             if (!err) {
                 res.status(201).json({ message: 'Appointment added successfully' });
@@ -298,7 +298,7 @@ app.get('/api/time-slots/:date', (req, res) => {
 
         const timeSlots = generateTimeSlots(duration);
 
-        client.query('SELECT oraprogramare FROM Programare WHERE dataprogramare = $1',
+        client.query('SELECT oraprogramare FROM Programare WHERE dataprogramare = $1 AND statusprogramare < 4',
         [selectedDate], (err, result) => {
             if (err) {
                 console.error('error fetching oraprogramare from the database', err);
@@ -354,6 +354,19 @@ app.patch('/api/update-statusprogramare/2/:programareId', (req, res) => {
         }
         res.status(200).json({success: true, message: 'Status Programare updated successfully'});
     });
+});
+
+app.patch('/api/update-programare-time/:programareId', (req, res) => {
+    const programareId = req.params.programareId;
+    client.query('UPDATE Programare SET statusprogramare = 4 WHERE CodProgramare = $1',
+    [programareId], (err, result) => {
+        if(err){
+            console.error('Error canceling appointment:', err);
+            res.status(500).json({success: false, error: 'internal server error'});
+            return;
+        }
+        res.status(200).json({success: true, message: 'Programare canceled successfully'});
+    })
 });
 
 

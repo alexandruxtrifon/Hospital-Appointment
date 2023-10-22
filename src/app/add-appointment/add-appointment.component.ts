@@ -37,6 +37,8 @@ export class AddAppointmentComponent implements OnInit {
   //timeSlots: string[] = [];
   timeSlots: string[] =[];
 
+  selectedPriority: number[]=[];
+  statusProgramare: number = 1;
   //names: string[]=[];
   names: Patient[] = [];
   selectedName: string | undefined;
@@ -65,6 +67,7 @@ export class AddAppointmentComponent implements OnInit {
     this.http.get<string[]>(this.apiGetTimeSlots).subscribe(data =>{
       this.timeSlots = data;
     
+    
     });
 }
   
@@ -73,11 +76,13 @@ export class AddAppointmentComponent implements OnInit {
   onProgrameazaClick(){
     if(this.selectedDate){
     const formattedDate = this.formatDate(this.selectedDate);
-
+   // const parsedPriority = parseInt(this.selectedPriority, 10);
     const appointmentData = {
       Nume: this.selectedName,
       DataProgramare: formattedDate,
       OraProgramare: this.selectedTime,
+      Prioritate: this.selectedPriority,
+      StatusProgramare: this.statusProgramare
     };
     console.log(appointmentData);
   

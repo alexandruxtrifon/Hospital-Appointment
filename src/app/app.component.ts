@@ -10,8 +10,11 @@ import {CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray} from '@angular/cdk/d
 import {MatTableModule} from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-
-
+import { MatSort } from '@angular/material/sort';
+import { ViewChild } from '@angular/core';
+import { EditAppointmentComponent } from './edit-appointment/edit-appointment.component';
+import { Sort, MatSortModule} from '@angular/material/sort';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 interface Appointment{
   codprogramare: number;
   nume: string;
@@ -35,20 +38,37 @@ export class AppComponent implements OnInit{
   appointments: Appointment[] = [];
   constructor(private _dialog: MatDialog, 
     private httpClient: HttpClient,
-    private _snackBar: MatSnackBar){}
-
+    private _snackBar: MatSnackBar,
+    private _liveAnnouncer: LiveAnnouncer){}
     selectedDate: Date = new Date();
+    public tableData: any[] = [];
+    @ViewChild(MatSort) sort!: MatSort;
+
 
   ngOnInit(){
     this.getAppointments();
+    this.dataSource.sort = this.sort;
+    this.sort.active= 'oraprogramare';
+    this.sort.direction= 'asc';
   }
+
+  announceSortChange(sortState: Sort) {
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
+  }
+
   openMatDialogProgramare(){
     this._dialog.open(AddAppointmentComponent);
   }
   openMatDialogPacient(){
     this._dialog.open(AddPacientComponent);
   }
-
+  openMatDialogModifica(){
+    this._dialog.open(EditAppointmentComponent);
+  }
   oldgetAppointments(){
     this.httpClient
     .get<Appointment[]>('http://localhost:3000/api/get-appointment-data')
@@ -69,6 +89,7 @@ export class AppComponent implements OnInit{
       (error)=>{
         console.error('Error fetching appointments:', error);
       });
+      this.sortTableByOraAscending();
   }
 
   openMatDialogConfig(){
@@ -115,6 +136,23 @@ export class AppComponent implements OnInit{
         });  
     }
     console.log('Status Programare')
+    this.fetchAppointmentsByDate()
+  }
+
+  cancelAppointment(appointment: Appointment){
+    this.httpClient.patch<any>(`http://localhost:3000/api/update-programare-time/${appointment.codprogramare}`, null)
+    .subscribe((response) => {
+      if (response.success){
+        appointment.statusprogramare = 4;
+        this.fetchUpdatedData();
+        this._snackBar.open(`Programarea pacientului ${appointment.nume} a fost anulata`, 'Inchide', {duration: 3000});
+      } else {
+        console.error('error canceling programare');
+      }
+    },
+    (error) => {
+      console.error('error canceling appointment:', error);
+    });
   }
 
   fetchUpdatedData() {
@@ -141,8 +179,47 @@ export class AppComponent implements OnInit{
 
   formatDate(date: Date): string {
     const year = date.getFullYear();
-    const month= String(date.getMonth()+1).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2,'0');
     const day = String(date.getDate()).padStart(2,'0');
     return `${year}-${month}-${day}`;
+  }
+
+  sortTableByOraAscending() {
+    this.dataSource.data = this.dataSource.data.sort((a, b) => {
+      const oraA = a.oraprogramare;
+      const oraB = b.oraprogramare;
+      return oraA.localeCompare(oraB);
+    });
+
+
+    this.dataSource.sort = this.sort;
+  }
+
+  ordoneazaReprogrameaza() {
+    if (this.dataSource) {
+      this.tableData = this.dataSource.data.map((appointment: any) => ({
+        name: appointment.nume,
+        age: appointment.varsta,
+        appointmentDate: appointment.dataprogramare,
+        appointmentTime: appointment.oraprogramare.substring(0, 5),
+        status: this.getStatusLabel(appointment.statusprogramare),
+        priority: appointment.prioritate,
+      }));
+      console.log(this.tableData);
+    }
+  }
+  getStatusLabel(status: number): number {
+    switch (status) {
+      case 1:
+        return 1;
+      case 2:
+        return 2;
+      case 3:
+        return 3;
+      case 4:
+        return 4;
+      default:
+        return 0;
+    }
   }
 }
